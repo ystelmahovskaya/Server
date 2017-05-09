@@ -14,9 +14,23 @@ module.exports = function(app, db) {
             }
         })
     });
+    app.get('/Users/verify/:email/:password', function(req, res) {
+
+        const email = req.params.email;
+        const password = req.params.password;
+        const details = { 'user_email': email, 'user_password':password };
+        db.collection('Users').findOne(details, function(err, item){
+            if (err) {
+                res.send({'error':'An error has occurred'});
+            } else {
+                res.send(item);
+            }
+        })
+    });
+
     app.post('/Users', function(req, res) {
         console.log("req"+req);
-        const usr = { user_name: req.body.user_name, user_password: req.body.user_password, user_password: req.body.user_score };
+        const usr = { user_name: req.body.user_name, user_password: req.body.user_password, user_email: req.body.user_email, user_score: req.body.user_score };
         db.collection('Users').insert(usr, function(err, result)  {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
