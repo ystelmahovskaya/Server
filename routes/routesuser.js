@@ -2,10 +2,10 @@ var ObjectID = require('mongodb').ObjectID;
 
 module.exports = function(app, db) {
 
-    app.get('/Users/:id', function(req, res) {
+    app.get('/Users/:email', function(req, res) {
 
-        const id = req.params.id;
-        const details = { '_id': new ObjectID(id) };
+        const id = req.params.email;
+        const details = { 'user_email': email}
         db.collection('Users').findOne(details, function(err, item){
             if (err) {
                 res.send({'error':'An error has occurred'});
@@ -14,6 +14,21 @@ module.exports = function(app, db) {
             }
         })
     });
+
+    app.get('/Users/count/:email', function(req, res) {
+
+        const email = req.params.email;
+        const details = { 'user_email': email};
+        db.collection('Users').count(details, function(err, item){
+            if (err) {
+                res.send({'error':'An error has occurred'});
+            } else {
+              //  console.log(item);
+                res.send(item.toString());
+            }
+        })
+    });
+
     app.get('/Users/verify/:email/:password', function(req, res) {
 
         const email = req.params.email;
@@ -29,8 +44,8 @@ module.exports = function(app, db) {
     });
 
     app.post('/Users', function(req, res) {
-        console.log("req"+req);
-        const usr = { user_name: req.body.user_name, user_password: req.body.user_password, user_email: req.body.user_email, user_score: req.body.user_score };
+        console.log("req"+req.toString());
+        const usr = { user_name: req.body.user_name, user_password: req.body.user_password, user_email: req.body.user_email};
         db.collection('Users').insert(usr, function(err, result)  {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
