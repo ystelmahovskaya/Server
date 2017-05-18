@@ -4,7 +4,7 @@ module.exports = function(app, db) {
 
     app.get('/Users/:email', function(req, res) {
 
-        const id = req.params.email;
+        const email = req.params.email;
         const details = { 'user_email': email}
         db.collection('Users').findOne(details, function(err, item){
             if (err) {
@@ -68,14 +68,35 @@ module.exports = function(app, db) {
         })
     });
     app.post('/Statistics', function(req, res) {
-        const usr = { _id: req.body._id, date: req.body.date, score: req.body.score };
-        db.collection('Statistics').insert(usr, function(err, result)  {
+        const stat = { user_id: req.body.user_id, date: req.body.date, score: req.body.score };
+        db.collection('Statistics').insert(stat, function(err, result)  {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });
             } else {
                 res.send(result.ops[0]);
             }
         });
+    });
+    app.get('/content/:name', function (req, res, next) {
+
+        var options = {
+            root: './content/',
+            headers: {
+                'x-timestamp': Date.now(),
+                'Content-Type': 'video/mp4',
+                'x-sent': true
+            }
+        };
+
+        var fileName = req.params.name;
+        res.sendFile(fileName, options, function (err) {
+            if (err) {
+                next(err);
+            } else {
+                console.log('Sent:', fileName);
+            }
+        });
+
     });
 };
 
