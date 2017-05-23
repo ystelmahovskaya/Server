@@ -1,6 +1,7 @@
 var ObjectID = require('mongodb').ObjectID;
+const parser=require('subtitles-parser');
 
-module.exports = function(app, db) {
+module.exports = function(app, db, filesystem) {
 
     app.get('/Users/:email', function(req, res) {
 
@@ -96,6 +97,21 @@ module.exports = function(app, db) {
                 console.log('Sent:', fileName);
             }
         });
+
+    });
+    app.get('/content/sub/:name', function (req, res, next) {
+
+        var filename=req.params.name;
+
+        var srt = filesystem.readFileSync('./'+filename);
+
+        var data1 = parser.fromSrt(srt.toString(),true);
+       // if (err) {
+          //  res.send({'error':'An error has occurred'});
+        //} else {
+            res.send(data1);
+        //}
+
 
     });
 };

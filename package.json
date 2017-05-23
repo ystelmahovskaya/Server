@@ -10,6 +10,7 @@
     "del": "^2.2.2",
     "express": "^4.15.2",
     "lokijs": "^1.4.3",
-    "mongodb": "^2.2.26"
+    "mongodb": "^2.2.26",
+    "subtitles-parser": "0.0.2"
   }
 }
