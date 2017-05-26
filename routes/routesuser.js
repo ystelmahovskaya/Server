@@ -106,12 +106,22 @@ module.exports = function(app, db, filesystem) {
         var srt = filesystem.readFileSync('./'+filename);
 
         var data1 = parser.fromSrt(srt.toString(),true);
-       // if (err) {
-          //  res.send({'error':'An error has occurred'});
-        //} else {
-            res.send(data1);
-        //}
 
+            res.send(data1);
+
+    });
+    app.delete('/delete/statistics/:id', function (req, res) {
+        const id = req.params.id;
+        const details = { 'user_id':id };
+
+        db.collection('Statistics').remove(details);
+
+    });
+    app.delete('/delete/users/:id', function (req, res) {
+        const id = req.params.id;
+        const details = { 'user_id':id };
+        db.collection('Statistics').remove(details);
+        db.collection('Users').remove(details);
 
     });
 };
