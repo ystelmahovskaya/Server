@@ -110,18 +110,22 @@ module.exports = function(app, db, filesystem) {
             res.send(data1);
 
     });
-    app.delete('/delete/statistics/:id', function (req, res) {
+    app.delete('/Statistics/delete/:id', function (req, res) {
+        console.log('delete/statistics:', req);
         const id = req.params.id;
         const details = { 'user_id':id };
 
         db.collection('Statistics').remove(details);
 
     });
-    app.delete('/delete/users/:id', function (req, res) {
+    app.delete('/Users/delete/:id', function (req, res) {
+        console.log('delete/users:', req);
         const id = req.params.id;
         const details = { 'user_id':id };
+        var ObjectId = require('mongodb').ObjectID;
+        const detailsUsers={'_id':  ObjectId(id)};
         db.collection('Statistics').remove(details);
-        db.collection('Users').remove(details);
+        db.collection('Users').remove(detailsUsers);
 
     });
 };
