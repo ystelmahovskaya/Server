@@ -69,7 +69,8 @@ module.exports = function(app, db, filesystem) {
         })
     });
     app.post('/Statistics', function(req, res) {
-        const stat = { user_id: req.body.user_id, date: req.body.date, score: req.body.score };
+        console.log(req)
+        const stat = { user_id: req.body.user_id, date: new Date() , score: req.body.score };
         db.collection('Statistics').insert(stat, function(err, result)  {
             if (err) {
                 res.send({ 'error': 'An error has occurred' });

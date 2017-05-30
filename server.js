@@ -14,7 +14,7 @@ app.set('port', port);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json({limit: '50mb'}));
 
-
+app.use(express.static(__dirname + '/public'));
 
 MongoClient.connect(db.url, function (err, database){
     if (err)
