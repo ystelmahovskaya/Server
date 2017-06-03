@@ -68,6 +68,17 @@ module.exports = function(app, db, filesystem) {
             }
         })
     });
+    app.get('/ContentVideos', function(req, res) {
+
+
+        db.collection('ContentVideos').find().toArray( function(err, item){
+            if (err) {
+                res.send({'error':'An error has occurred'});
+            } else {
+                res.send(item);
+            }
+        })
+    });
     app.post('/Statistics', function(req, res) {
         console.log(req)
         const stat = { user_id: req.body.user_id, date: new Date() , score: req.body.score };
@@ -86,6 +97,27 @@ module.exports = function(app, db, filesystem) {
             headers: {
                 'x-timestamp': Date.now(),
                 'Content-Type': 'video/mp4',
+                'x-sent': true
+            }
+        };
+
+        var fileName = req.params.name;
+        res.sendFile(fileName, options, function (err) {
+            if (err) {
+                next(err);
+            } else {
+                console.log('Sent:', fileName);
+            }
+        });
+
+    });
+    app.get('/images/:name', function (req, res, next) {
+
+        var options = {
+            root: './images/',
+            headers: {
+                'x-timestamp': Date.now(),
+                'Content-Type': 'image/jpeg',
                 'x-sent': true
             }
         };

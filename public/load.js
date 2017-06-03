@@ -35,7 +35,7 @@ var user_id
 
             data: [
                 {
-                    type: "line", 
+                    type: "line",
                     dataPoints:points
                     // dataPoints: [
                     //     { x: new Date(2012, 00, 1), y: 450 },
